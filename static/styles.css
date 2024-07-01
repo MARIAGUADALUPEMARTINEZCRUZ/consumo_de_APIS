@@ -1,0 +1,208 @@
+/* Estilos generales */
+body {
+    font-family: 'Open Sans', sans-serif; /* Fuente personalizada */
+    margin: 0;
+    padding: 0;
+    background-image: url('https://static.vecteezy.com/system/resources/previews/007/535/400/non_2x/blurred-and-soft-blue-gradient-background-free-vector.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 80px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8), 0 0 10px red;
+}
+
+/* Barra de navegación */
+nav {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    position: fixed;
+    top: 50%; /* Centrar verticalmente */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translate(-50%, -50%); /* Centrar con respecto al punto medio */
+    padding: 20px; /* Espaciado interior */
+    border-radius: 50px; /* Radio de borde redondeado */
+    width: 400px; /* Ancho deseado */
+    max-width: 80%; /* Ancho máximo para que no ocupe toda la pantalla en dispositivos grandes */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 15px; /* Espacio entre elementos */
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 15px; /* Espaciado interior de los enlaces */
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transiciones suaves */
+    font-size: 18px; /* Tamaño de la fuente */
+    font-weight: 600; /* Peso de la fuente */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Sombra al texto */
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Efecto de transparencia al pasar el mouse */
+    color: #ffcc00; /* Cambio de color al pasar el mouse */
+    text-decoration: underline; /* Subrayado animado */
+    text-shadow: none; /* Elimina la sombra al pasar el mouse */
+}
+
+/* Estilos específicos para cada sección */
+nav ul li.agregar {
+    background-color: rgba(255, 0, 0, 0.9); /* Fondo rojo más sólido para Agregar */
+}
+
+nav ul li.modificar {
+    background-color: rgba(0, 0, 255, 0.9); /* Fondo azul más sólido para Modificar */
+}
+
+nav ul li.eliminar {
+    background-color: rgba(0, 255, 0, 0.9); /* Fondo verde más sólido para Eliminar */
+}
+
+/* Estilos para el contenido específico de cada sección */
+
+/* Por ejemplo, para la sección Agregar */
+.agregar-section {
+    background-color: rgba(255, 0, 0, 0.2); /* Fondo semitransparente rojo para Agregar */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.agregar-section h2 {
+    color: rgba(255, 0, 0, 0.9); /* Color rojo sólido para el título */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra al texto del título */
+}
+
+/* Para la sección Modificar */
+.modificar-section {
+    background-color: rgba(0, 0, 255, 0.2); /* Fondo semitransparente azul para Modificar */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.modificar-section h2 {
+    color: rgba(0, 0, 255, 0.9); /* Color azul sólido para el título */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra al texto del título */
+}
+
+/* Para la sección Eliminar */
+.eliminar-section {
+    background-color: rgba(0, 255, 0, 0.2); /* Fondo semitransparente verde para Eliminar */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.eliminar-section h2 {
+    color: rgba(0, 255, 0, 0.9); /* Color verde sólido para el título */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra al texto del título */
+}
+
+/* Estilos para el botón de volver al inicio */
+.back-to-top {
+    position: fixed; /* Fijar posición */
+    bottom: 80px; /* Distancia desde la parte inferior */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translateX(-50%); /* Centrar con respecto al punto medio */
+    background-color: violet;
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
+    color: white; /* Cambia el color del texto al pasar el mouse */
+}
+/* Estilos para la tabla de interfaces */
+table {
+    width: 80%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
+}
+
+th, td {
+    padding: 10px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Línea de separación */
+}
+
+th {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    color: white; /* Texto blanco */
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.1); /* Fondo para filas pares */
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo al pasar el mouse */
+}
+
+/* Estilos para el formulario de agregar loopback */
+form {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    width: 300px; /* Ancho del formulario */
+    margin: 50px auto; /* Centrar horizontalmente */
+    padding: 20px; /* Espaciado interior */
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+form label {
+    display: block; /* Etiquetas en bloque */
+    margin-bottom: 5px; /* Espaciado inferior */
+    color: #333;
+    font-weight: bold;
+}
+
+form input {
+    width: calc(100% - 20px); /* Ancho completo menos el padding */
+    padding: 10px; /* Espaciado interior */
+    margin-bottom: 10px; /* Espaciado inferior */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Sombra interior */
+}
+
+form button {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Espaciado interior */
+    background-color: #28a745; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de mano */
+    font-size: 16px; /* Tamaño de la fuente */
+    font-weight: bold; /* Negrita */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+form button:hover {
+    background-color: #218838; /* Color de fondo al pasar el mouse */
+}
