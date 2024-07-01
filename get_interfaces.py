@@ -89,7 +89,7 @@ def post_loopback():
     return render_template('agregar.html')
 
 
-@app.route('/eliminar', methods=['GET', 'POST'])
+@app.route('/eliminar', methods=['GET','POST'])
 def del_loopback():
     if request.method == 'POST':
         loopback_name = request.form['nombre']
@@ -105,8 +105,7 @@ def del_loopback():
             return json.dumps(
                 {'status': 'error', 'message': f"Error al eliminar Loopback {loopback_name}"}), resp.status_code
 
-    return redirect(url_for('eliminar.html'))
-
+    return render_template('eliminar.html')  # Renderiza la plantilla 'eliminar.html'
 
 if __name__ == '__main__':
     app.run(debug=True)
