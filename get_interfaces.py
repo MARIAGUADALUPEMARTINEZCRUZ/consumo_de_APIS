@@ -50,8 +50,15 @@ def get_banner():
 
     if resp.status_code == 200:
         banner = resp.json().get("Cisco-IOS-XE-native:motd", {}).get("banner", "")
+    else:
+        print(f"Error: Received status code {resp.status_code}")
+        print(f"Response: {resp.text}")
+
+    if not banner:
+        banner = "No se encontró ningún banner."
 
     return render_template('banner.html', banner=banner)
+
 
 
 @app.route('/agregar', methods=['GET', 'POST'])
@@ -92,6 +99,49 @@ def post_loopback():
     return render_template('agregar.html')
 
 
+@app.route('/modificar', methods=['GET', 'POST'])
+def modify_interface():
+    if request.method == 'POST':
+        interface_name = request.form['nombre']
+        new_ip = request.form['ip']
+        new_netmask = request.form['mascara']
+        new_description = request.form['descripción']
+
+        module = f"data/ietf-interfaces:interfaces/interface={interface_name}"
+        resp_get = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+
+        if resp_get.status_code == 200:
+            interface_data = resp_get.json().get("ietf-interfaces:interface", {})
+            interface_data['description'] = new_description
+
+            # Modificar la dirección IP si está presente en la interfaz
+            if 'ietf-ip:ipv4' in interface_data:
+                if 'address' in interface_data['ietf-ip:ipv4'] and len(interface_data['ietf-ip:ipv4']['address']) > 0:
+                    interface_data['ietf-ip:ipv4']['address'][0]['ip'] = new_ip
+                    interface_data['ietf-ip:ipv4']['address'][0]['netmask'] = new_netmask
+                else:
+                    interface_data['ietf-ip:ipv4']['address'] = [{'ip': new_ip, 'netmask': new_netmask}]
+            else:
+                interface_data['ietf-ip:ipv4'] = {'address': [{'ip': new_ip, 'netmask': new_netmask}]}
+
+            resp_put = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers,
+                                    data=json.dumps({"ietf-interfaces:interface": interface_data}),
+                                    verify=False)
+
+            if resp_put.status_code == 200:
+                flash(f"Interfaz {interface_name} modificada exitosamente!", "success")
+                return jsonify({'status': 'success', 'message': f"Interfaz {interface_name} modificada exitosamente!"}), 200
+            else:
+                flash(f"Error al modificar Interfaz {interface_name}", "danger")
+                print(f"Error al modificar: {resp_put.status_code} - {resp_put.text}")
+                return jsonify({'status': 'error', 'message': f"Error al modificar Interfaz {interface_name}"}), resp_put.status_code
+        else:
+            flash(f"Interfaz {interface_name} no encontrada", "danger")
+            print(f"Error al obtener interfaz: {resp_get.status_code} - {resp_get.text}")
+            return jsonify({'status': 'error', 'message': f"Interfaz {interface_name} no encontrada"}), resp_get.status_code
+
+    return render_template('modificar.html')
+
 @app.route('/eliminar', methods=['GET', 'POST'])
 def del_loopback():
     if request.method == 'POST':
@@ -112,7 +162,6 @@ def del_loopback():
     return render_template('eliminar.html')
 
     #return redirect(url_for('eliminar.html'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)

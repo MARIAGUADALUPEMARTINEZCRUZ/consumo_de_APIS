@@ -1,8 +1,5 @@
-/* Estilos generales */
 body {
     font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #121212; /* Fondo oscuro */
     color: #e0e0e0; /* Texto claro */
     display: flex;
@@ -10,17 +7,15 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    margin: 0;
 }
 
-/* Título principal */
 h1 {
     color: #e0e0e0;
     text-align: center;
     margin-bottom: 20px;
-    text-shadow: none;
 }
 
-/* Formulario de eliminación */
 form {
     width: 80%;
     max-width: 400px;
@@ -28,13 +23,11 @@ form {
     background-color: #333; /* Fondo oscuro */
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
-    margin-top: 20px;
 }
 
 form label {
     display: block;
     margin-bottom: 10px;
-    color: #e0e0e0;
 }
 
 form input[type="text"] {
@@ -48,8 +41,8 @@ form input[type="text"] {
 }
 
 form button[type="submit"] {
-    background-color: #b71c1c; /* Fondo del botón eliminar */
-    color: #e0e0e0; /* Texto del botón eliminar */
+    background-color: #bb86fc; /* Fondo del botón */
+    color: #121212; /* Texto del botón */
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -61,5 +54,19 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-    background-color: #870000;
+    background-color: #3700b3;
+    color: #e0e0e0;
+}
+
+a.back-to-top {
+    display: block;
+    margin-top: 20px;
+    color: #bb86fc;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+}
+
+a.back-to-top:hover {
+    color: #3700b3;
 }

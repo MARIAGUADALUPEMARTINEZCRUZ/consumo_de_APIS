@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Interfaz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modificar.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Modificar Interfaz</h1>
+    <form id="modificarForm" method="post" action="{{ url_for('modify_interface') }}">
+        <label for="nombre">Nombre de la Interfaz:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="ip">Nueva IP:</label>
+        <input type="text" id="ip" name="ip" required>
+        <label for="mascara">Nueva Máscara:</label>
+        <input type="text" id="mascara" name="mascara" required>
+        <label for="descripción">Nueva Descripción:</label>
+        <input type="text" id="descripción" name="descripción" required>
+        <button type="submit">Modificar</button>
+    </form>
+
+    <script>
+    $(document).ready(function() {
+        $('#modificarForm').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    alert(response.message);
+                    if (response.status === 'success') {
+                        window.location.href = "{{ url_for('index') }}";
+                    }
+                },
+                error: function(response) {
+                    alert('Error: ' + response.responseJSON.message);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
