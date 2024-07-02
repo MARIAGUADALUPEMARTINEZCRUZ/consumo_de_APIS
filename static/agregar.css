@@ -1,0 +1,64 @@
+/* Estilos generales */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Título principal */
+h1 {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: none;
+}
+
+/* Formulario de agregar */
+form {
+    width: 80%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #333; /* Fondo oscuro */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+}
+
+form input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444; /* Fondo del input */
+    color: #e0e0e0;
+    border: 2px solid #555; /* Borde sólido */
+    border-radius: 5px;
+}
+
+form button[type="submit"] {
+    background-color: #bb86fc; /* Fondo del botón */
+    color: #121212; /* Texto del botón */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #3700b3;
+    color: #e0e0e0;
+}

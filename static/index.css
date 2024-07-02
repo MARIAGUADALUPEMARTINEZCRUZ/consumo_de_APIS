@@ -1,0 +1,99 @@
+/* Estilos generales */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Título principal */
+h1 {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: none;
+}
+
+/* Barra de navegación */
+nav {
+    background-color: #333; /* Fondo oscuro */
+    padding: 20px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 15px;
+}
+
+/* Cuadro de selección para cada enlace */
+nav ul li a {
+    display: block;
+    color: #e0e0e0;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: none;
+    border-radius: 10px; /* Bordes redondeados */
+    border: 2px solid #555; /* Borde sólido */
+    background-color: #444; /* Fondo del cuadro de selección */
+    cursor: pointer; /* Cursor de mano */
+}
+
+nav ul li a:hover {
+    background-color: #555;
+    color: #ffcc00;
+    text-decoration: underline;
+    border-color: #ffcc00; /* Cambio de color del borde al pasar el mouse */
+}
+
+/* Estilos específicos para cada sección */
+nav ul li.agregar {
+    background-color: #b71c1c;
+}
+
+nav ul li.modificar {
+    background-color: #0d47a1;
+}
+
+nav ul li.eliminar {
+    background-color: #1b5e20;
+}
+
+/* Botón de volver al inicio */
+.back-to-top {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #bb86fc;
+    color: #121212;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #3700b3;
+    color: #e0e0e0;
+}

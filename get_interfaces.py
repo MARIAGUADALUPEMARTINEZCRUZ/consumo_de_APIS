@@ -31,7 +31,7 @@ def get_interfaces():
         for interface in data_json["ietf-interfaces:interfaces"]["interface"]:
             interfaces.append({
                 'name': interface['name'],
-                'ip': interface.get('ietf-ip:ipv4', {}).get('address', [{}])[0].get('ip', 'N/A'),
+                'ip':['ip'],
                 'description': interface.get('description', 'N/A'),
                 'enabled': interface['enabled']
             })
@@ -94,12 +94,8 @@ def del_loopback():
     if request.method == 'POST':
         loopback_name = request.form['nombre']
 
-        # Intentar eliminar la interfaz
         module = f"data/ietf-interfaces:interfaces/interface={loopback_name}"
-        print(f"Deleting loopback interface: {module}")  # Debug statement
         resp = requests.delete(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
-        print(f"Response status code: {resp.status_code}")  # Debug statement
-        print(f"Response content: {resp.content}")  # Debug statement
 
         if resp.status_code == 204:
             flash(f"Loopback {loopback_name} eliminado exitosamente!", "success")
@@ -109,7 +105,10 @@ def del_loopback():
             return json.dumps(
                 {'status': 'error', 'message': f"Error al eliminar Loopback {loopback_name}"}), resp.status_code
 
-    return render_template('eliminar.html')  # Renderiza la plantilla 'eliminar.html'
+    # Renderizar el formulario para eliminar loopback
+    return render_template('eliminar.html')
+
+    #return redirect(url_for('eliminar.html'))
 
 
 if __name__ == '__main__':
