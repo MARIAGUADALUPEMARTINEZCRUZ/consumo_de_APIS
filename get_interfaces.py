@@ -7,7 +7,7 @@ requests.packages.urllib3.disable_warnings()
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-api_url = "https://192.168.56.101/restconf/"
+api_url = "https://192.168.56.102/restconf/"
 headers = {
     "Accept": "application/yang-data+json",
     "Content-type": "application/yang-data+json"
