@@ -56,6 +56,8 @@ form button[type="submit"] {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease;
+    display: block;
+    margin: 0 auto;
 }
 
 form button[type="submit"]:hover {

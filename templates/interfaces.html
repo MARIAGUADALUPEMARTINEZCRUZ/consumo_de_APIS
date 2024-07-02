@@ -12,6 +12,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>IP</th>
+                <th>Máscara</th>
                 <th>Descripción</th>
                 <th>Habilitado</th>
             </tr>
@@ -21,6 +22,7 @@
             <tr>
                 <td>{{ interface.name }}</td>
                 <td>{{ interface.ip }}</td>
+                <td>{{ interface.netmask }}</td>
                 <td>{{ interface.description }}</td>
                 <td>{{ 'True' if interface.enabled else 'False' }}</td>
             </tr>

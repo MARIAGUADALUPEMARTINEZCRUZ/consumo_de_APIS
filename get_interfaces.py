@@ -1,13 +1,13 @@
 import json
 import requests
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 
 requests.packages.urllib3.disable_warnings()
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-api_url = "https://192.168.56.102/restconf/"
+api_url = "https://192.168.56.101/restconf/"
 headers = {
     "Accept": "application/yang-data+json",
     "Content-type": "application/yang-data+json"
@@ -29,9 +29,13 @@ def get_interfaces():
 
     if resp.status_code == 200:
         for interface in data_json["ietf-interfaces:interfaces"]["interface"]:
+            ip_addresses = interface.get('ietf-ip:ipv4', {}).get('address', [])
+            ip = ip_addresses[0]['ip'] if ip_addresses else 'N/A'
+            netmask = ip_addresses[0]['netmask'] if ip_addresses else 'N/A'
             interfaces.append({
                 'name': interface['name'],
-                'ip':['ip'],
+                'ip': ip,
+                'netmask': netmask,
                 'description': interface.get('description', 'N/A'),
                 'enabled': interface['enabled']
             })
@@ -80,11 +84,10 @@ def post_loopback():
 
         if resp.status_code == 201:
             flash(f"Loopback: {loopback_name} agregado exitosamente!", "success")
-            return json.dumps({'status': 'success', 'message': f"Loopback: {loopback_name} agregado exitosamente!"}), 201
+            return jsonify({'status': 'success', 'message': f"Loopback: {loopback_name} agregado exitosamente!"}), 201
         else:
             flash(f"Error al agregar Loopback {loopback_name}", "danger")
-            return json.dumps(
-                {'status': 'error', 'message': f"Error al agregar Loopback: {loopback_name}"}), resp.status_code
+            return jsonify({'status': 'error', 'message': f"Error al agregar Loopback: {loopback_name}"}), resp.status_code
 
     return render_template('agregar.html')
 
