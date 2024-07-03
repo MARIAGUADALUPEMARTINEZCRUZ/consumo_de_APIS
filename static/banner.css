@@ -64,24 +64,20 @@ form button[type="submit"]:hover {
     background-color: #3700b3;
     color: #e0e0e0;
 }
-
-/* Estilos para el enlace Volver al inicio */
-a.back-to-top {
-    background-color: #bb86fc; /* Fondo del enlace */
-    color: #121212; /* Texto del enlace */
+/* Enlace de volver al inicio */
+.back-to-top {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #fff;
+    background-color: #b71c1c; /* Fondo del botón */
     padding: 10px 20px;
-    border: none;
+    text-decoration: none;
     border-radius: 5px;
-    text-decoration: none; /* Elimina el subrayado */
-    text-align: center; /* Centra el texto */
-    display: block; /* Asegura que sea un bloque */
-    width: fit-content; /* Ajusta el ancho al contenido */
-    margin: 20px auto; /* Centra el enlace horizontalmente */
-    font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
-a.back-to-top:hover {
-    background-color: #3700b3;
-    color: #e0e0e0;
+.back-to-top:hover {
+    background-color: #870000;
 }
+

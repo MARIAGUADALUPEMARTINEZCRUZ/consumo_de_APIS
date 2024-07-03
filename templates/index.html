@@ -4,18 +4,30 @@
     <meta charset="UTF-8">
     <title>Gestión de API</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    
 </head>
 <body>
-    <h1>Gestión de API</h1>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('get_interfaces') }}">Ver Interfaces</a></li>
-            <li><a href="{{ url_for('get_banner') }}">Ver Banner</a></li>
-            <li><a href="{{ url_for('post_loopback') }}">Agregar Loopback</a></li>
-            <li><a href="{{ url_for('modify_interface') }}">Editar Loopback</a></li>
-            <li><a href="{{ url_for('del_loopback') }}">Eliminar Loopback</a></li>
-        </ul>
-    </nav>
+    <div class="menu-toggle">
+        <input type="checkbox" id="menu-checkbox">
+        <label for="menu-checkbox" class="menu-icon">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </label>
+        <nav class="sidebar">
+            <ul>
+                <li><a href="{{ url_for('get_interfaces') }}">Ver Interfaces</a></li>
+                <li><a href="{{ url_for('del_loopback') }}">Editar hostname</a></li>
+                <li><a href="{{ url_for('get_banner') }}">Ver Banner</a></li>
+                <li><a href="{{ url_for('post_loopback') }}">Agregar Loopback</a></li>
+                <li><a href="{{ url_for('modify_interface') }}">Editar Loopback</a></li>
+                <li><a href="{{ url_for('del_loopback') }}">Eliminar Loopback</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <h1>Gestión de API</h1>
+        <!-- Aquí va el contenido principal de tu página -->
+    </div>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>

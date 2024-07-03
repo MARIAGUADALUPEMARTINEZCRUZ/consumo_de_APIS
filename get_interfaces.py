@@ -7,7 +7,7 @@ requests.packages.urllib3.disable_warnings()
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-api_url = "https://192.168.56.101/restconf/"
+api_url = "https://192.168.56.102/restconf/"
 headers = {
     "Accept": "application/yang-data+json",
     "Content-type": "application/yang-data+json"
@@ -41,6 +41,29 @@ def get_interfaces():
             })
     return render_template('interfaces.html', interfaces=interfaces)
 
+@app.route('/hostname')
+def configure_hostname():
+    if request.method == 'POST':
+        new_hostname = request.form['hostname']
+        module = "data/Cisco-IOS-XE-native:native/hostname"
+        data = {
+            "Cisco-IOS-XE-native:hostname": new_hostname
+        }
+
+        resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+        
+        # Debugging: Imprime la respuesta del servidor para entender el problema
+        print(f'Status Code: {resp.status_code}')
+        print(f'Response Text: {resp.text}')
+
+        if resp.status_code == 200 or resp.status_code == 204:
+            message = "Hostname actualizado con éxito"
+        else:
+            message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
+
+    return render_template('hostname.html', message=message)
+    
+  
 
 @app.route('/banner')
 def get_banner():
@@ -164,4 +187,4 @@ def del_loopback():
     #return redirect(url_for('eliminar.html'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001)
