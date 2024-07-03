@@ -16,11 +16,12 @@
         <nav class="sidebar">
             <ul>
                 <li><a href="{{ url_for('get_interfaces') }}">Ver Interfaces</a></li>
-                <li><a href="{{ url_for('del_loopback') }}">Editar hostname</a></li>
+                <li><a href="{{ url_for('configure_hostname') }}">Editar hostname</a></li>
                 <li><a href="{{ url_for('get_banner') }}">Ver Banner</a></li>
                 <li><a href="{{ url_for('post_loopback') }}">Agregar Loopback</a></li>
                 <li><a href="{{ url_for('modify_interface') }}">Editar Loopback</a></li>
                 <li><a href="{{ url_for('del_loopback') }}">Eliminar Loopback</a></li>
+                <li><a href="{{ url_for('configure_dhcp') }}">Configurar DHCP</a></li>
             </ul>
         </nav>
     </div>

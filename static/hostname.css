@@ -1,5 +1,5 @@
-/* Estilos generales */
-body {
+ /* Estilos generales */
+ body {
     font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
@@ -16,20 +16,19 @@ body {
 h1 {
     color: #e0e0e0;
     text-align: center;
-    margin-bottom: 30px; /* Espacio adicional abajo del título */
+    margin-bottom: 20px;
     text-shadow: none;
 }
 
 /* Formulario */
 form {
     width: 80%;
-    max-width: 800px; /* Aumento del ancho máximo del formulario */
-    margin-top: 30px; /* Mayor margen arriba del formulario */
+    max-width: 400px;
+    margin-top: 20px;
     padding: 20px;
     background-color: #333; /* Fondo oscuro */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
-    text-align: center; /* Centrar texto dentro del formulario */
 }
 
 label {
@@ -38,28 +37,25 @@ label {
     display: block;
 }
 
-textarea {
-    width: calc(100% - 40px); /* Ancho calculado para el textarea */
-    padding: 15px; /* Aumento del padding para más espacio */
-    margin-bottom: 15px; /* Mayor espacio abajo del textarea */
-    background-color: #555; /* Fondo del textarea más oscuro */
+input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #555; /* Fondo del input */
     border: none;
     color: #e0e0e0;
     border-radius: 5px;
     box-sizing: border-box;
-    resize: vertical; /* Permitir redimensionar verticalmente */
-    height: 150px; /* Altura inicial del textarea */
 }
 
-textarea:focus {
+input[type="text"]:focus {
     outline: none;
     box-shadow: 0 0 5px #1E90FF; /* Sombra al enfocar */
 }
 
 button[type="submit"] {
     width: 100%;
-    padding: 12px; /* Aumento del padding para más espacio */
-    margin-top: 15px; /* Mayor margen arriba del botón */
+    padding: 10px;
     background-color: #b71c1c; /* Fondo del botón */
     color: #fff;
     border: none;
@@ -74,32 +70,28 @@ button[type="submit"]:hover {
 
 /* Mensaje de respuesta */
 .message {
-    margin-top: 30px; /* Mayor margen arriba del mensaje */
-    margin-bottom: 20px; /* Mayor margen abajo del mensaje */
+    margin-top: 20px;
     text-align: center;
-    padding: 15px; /* Mayor padding para más espacio */
+    padding: 10px;
     background-color: #555; /* Fondo del mensaje */
     border-radius: 5px;
 }
 
 .message.success {
     background-color: #007bff; /* Fondo del mensaje de éxito */
-    color: #fff; /* Texto del mensaje de éxito */
 }
 
 .message.error {
     background-color: #dc3545; /* Fondo del mensaje de error */
-    color: #fff; /* Texto del mensaje de error */
 }
-
 /* Enlace de volver al inicio */
 .back-to-top {
     display: block;
-    margin-top: 30px; /* Mayor margen arriba del enlace */
+    margin-top: 20px;
     text-align: center;
     color: #fff;
     background-color: #b71c1c; /* Fondo del botón */
-    padding: 12px 20px; /* Aumento del padding para más espacio */
+    padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;

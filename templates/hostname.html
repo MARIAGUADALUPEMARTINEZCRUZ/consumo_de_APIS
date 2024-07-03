@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Configurar Hostname</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hostname.css') }}">
 </head>
 <body>
     <h1>Configurar Hostname</h1>
-
-    <form action="{{ url_for('configure_hostname') }}" method="post">
-        <label for="hostname">Nuevo Hostname:</label><br>
-        <input type="text" id="hostname" name="hostname" required><br><br>
-        <input type="submit" value="Actualizar Hostname">
-    </form>
-
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
-
+    <form method="POST">
+        <label for="hostname">Nuevo Hostname:</label>
+        <input type="text" id="hostname" name="hostname" required>
+        <br><br>
+        <button type="submit">Actualizar Hostname</button>
+    </form>
     <a href="{{ url_for('index') }}" class="back-to-top">Volver al inicio</a>
 </body>
 </html>

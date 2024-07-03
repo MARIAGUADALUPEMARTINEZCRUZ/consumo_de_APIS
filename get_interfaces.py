@@ -41,8 +41,9 @@ def get_interfaces():
             })
     return render_template('interfaces.html', interfaces=interfaces)
 
-@app.route('/hostname')
+@app.route('/hostname', methods=['GET', 'POST'])
 def configure_hostname():
+    message = None
     if request.method == 'POST':
         new_hostname = request.form['hostname']
         module = "data/Cisco-IOS-XE-native:native/hostname"
@@ -50,18 +51,23 @@ def configure_hostname():
             "Cisco-IOS-XE-native:hostname": new_hostname
         }
 
-        resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
-        
-        # Debugging: Imprime la respuesta del servidor para entender el problema
-        print(f'Status Code: {resp.status_code}')
-        print(f'Response Text: {resp.text}')
+        try:
+            resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+            
+            # Debugging: Imprime la respuesta del servidor para entender el problema
+            print(f'Status Code: {resp.status_code}')
+            print(f'Response Text: {resp.text}')
 
-        if resp.status_code == 200 or resp.status_code == 204:
-            message = "Hostname actualizado con éxito"
-        else:
-            message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
+            if resp.status_code == 200 or resp.status_code == 204:
+                message = "Hostname actualizado con éxito"
+            else:
+                message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
+        
+        except requests.exceptions.RequestException as e:
+            message = f"Error de conexión: {str(e)}"
 
     return render_template('hostname.html', message=message)
+
     
   
 
@@ -82,6 +88,47 @@ def get_banner():
 
     return render_template('banner.html', banner=banner)
 
+@app.route('/banner', methods=['GET', 'POST'])
+def manage_banner():
+    if request.method == 'POST':
+        new_banner_text = request.form['new_banner']
+        module = "data/Cisco-IOS-XE-native:native/banner/motd"
+        data = {
+            "Cisco-IOS-XE-native:motd": {
+                "banner": new_banner_text
+            }
+        }
+
+        try:
+            resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+
+            if resp.status_code == 200 or resp.status_code == 204:
+                message = "Banner actualizado con éxito"
+            else:
+                message = f"Error al actualizar el banner: {resp.status_code} - {resp.text}"
+        
+        except requests.exceptions.RequestException as e:
+            message = f"Error de conexión: {str(e)}"
+
+        return redirect(url_for('manage_banner', message=message))
+    
+    elif request.method == 'GET':
+        module = "data/Cisco-IOS-XE-native:native/banner/motd"
+        resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+        banner = ""
+
+        if resp.status_code == 200:
+            banner = resp.json().get("Cisco-IOS-XE-native:motd", {}).get("banner", "")
+        else:
+            print(f"Error: Received status code {resp.status_code}")
+            print(f"Response: {resp.text}")
+
+        if not banner:
+            banner = "No se encontró ningún banner."
+
+        message = request.args.get('message')
+
+        return render_template('banner.html', banner=banner, message=message)
 
 
 @app.route('/agregar', methods=['GET', 'POST'])
@@ -181,10 +228,57 @@ def del_loopback():
             return json.dumps(
                 {'status': 'error', 'message': f"Error al eliminar Loopback {loopback_name}"}), resp.status_code
 
-    # Renderizar el formulario para eliminar loopback
+ 
     return render_template('eliminar.html')
 
     #return redirect(url_for('eliminar.html'))
+    
+@app.route('/dhcp', methods=['GET'])
+def show_dhcp_form():
+    return render_template('dhcp.html')
+@app.route('/dhcp-config', methods=['GET', 'POST'])
+def configure_dhcp():
+    message = None
+    success = False
 
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        dhcp_name = request.form['dhcp_name']
+        ip_range = request.form['dhcp_ip_range']
+        subnet_mask = request.form['dhcp_subnet_mask']
+        default_router = request.form['dhcp_default_router']
+        dns = request.form['dhcp_dns']
+
+        # Construir el JSON para la configuración DHCP
+        data = {
+            "Cisco-IOS-XE-native:dhcp": {
+                "name": dhcp_name,
+                "ip": {
+                    "address": ip_range,
+                    "mask": subnet_mask,
+                    "default-router": default_router,
+                    "dns-server": dns
+                }
+            }
+        }
+
+        # URL del módulo de configuración DHCP en tu API
+        module = "data/Cisco-IOS-XE-native:native/ip/dhcp"
+
+        try:
+            # Realizar la solicitud PUT al dispositivo con los datos JSON
+            resp = requests.put(f'{api_url}/{module}', auth=basicauth, headers=headers, json=data, verify=False)
+
+            # Verificar la respuesta del servidor
+            if resp.status_code == 200 or resp.status_code == 204:
+                message = "Configuración DHCP aplicada correctamente"
+                success = True
+            else:
+                message = f"Error al aplicar la configuración DHCP: {resp.status_code} - {resp.text}"
+
+        except Exception as e:
+            message = f"Error al conectar con la API: {str(e)}"
+
+    return render_template('dhcp.html', message=message, success=success)
 if __name__ == '__main__':
     app.run(port=5001)

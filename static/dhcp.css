@@ -1,0 +1,86 @@
+/* Estilos generales */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Título principal */
+h1 {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: none;
+}
+
+/* Formulario */
+form {
+    width: 80%;
+    max-width: 400px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #333; /* Fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
+}
+
+label {
+    color: #e0e0e0;
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #555; /* Fondo del input */
+    border: none;
+    color: #e0e0e0;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px #1E90FF; /* Sombra al enfocar */
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #b71c1c; /* Fondo del botón */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #870000;
+}
+
+/* Enlace de volver al inicio */
+.back-to-top {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #fff;
+    background-color: #b71c1c; /* Fondo del botón */
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #870000;
+}

@@ -7,7 +7,25 @@
 </head>
 <body>
     <h1>Banner</h1>
-    <p>{{ banner }}</p>
+    <div class="banner-container">
+        <div class="current-banner">
+            <h2></h2>
+            <p>{{ banner }}</p>
+        </div>
+        <div class="banner-form">
+            <h2>Editar Banner</h2>
+            {% if message %}
+                <div class="message {% if message.startswith('Error') %}error{% else %}success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                <label for="new_banner">Nuevo Banner:</label>
+                <textarea id="new_banner" name="new_banner" rows="4" required>{{ banner }}</textarea>
+                <button type="submit">Actualizar Banner</button>
+            </form>
+        </div>
+    </div>
     <a href="{{ url_for('index') }}" class="back-to-top">Volver al inicio</a>
 </body>
 </html>
