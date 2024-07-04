@@ -14,11 +14,12 @@ headers = {
 }
 basicauth = ("cisco", "cisco123!")
 original_hostname = None  # Variable global para almacenar el hostname original
+original_domain = None  # Variable global para almacenar el dominio original
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/interfaces')
 def get_interfaces():
@@ -40,7 +41,6 @@ def get_interfaces():
                 'enabled': interface['enabled']
             })
     return render_template('interfaces.html', interfaces=interfaces)
-
 
 @app.route('/hostname', methods=['GET', 'POST'])
 def configure_hostname():
@@ -75,7 +75,7 @@ def configure_hostname():
                 resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
 
                 if resp.status_code == 200 or resp.status_code == 204:
-                    message = f"Hostname actualizado con éxito a {new_hostname}"
+                    message = f"Hostname actualizado con éxito: {new_hostname}"
                 else:
                     message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
 
@@ -200,7 +200,6 @@ def post_loopback():
 
     return render_template('agregar.html')
 
-
 @app.route('/modificar', methods=['GET', 'POST'])
 def modify_interface():
     if request.method == 'POST':
@@ -265,55 +264,74 @@ def del_loopback():
 
     #return redirect(url_for('eliminar.html'))
 
-@app.route('/dhcp', methods=['GET'])
-def show_dhcp_form():
-    return render_template('dhcp.html')
-
-@app.route('/dhcp-config', methods=['GET', 'POST'])
-def configure_dhcp():
+# Configurar ruta para manejar la configuración del dominio
+@app.route('/domain', methods=['GET', 'POST'])
+def configure_domain():
+    global original_domain
     message = None
-    success = False
+    current_domain = None
+
+    # Obtener el dominio actual
+    try:
+        module = "data/Cisco-IOS-XE-native:native/ip/domain"
+        resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+
+        if resp.status_code == 200:
+            current_domain = resp.json().get('Cisco-IOS-XE-native:domain', {}).get('name', 'Dominio no disponible')
+            # Guardar el dominio actual como original si aún no se ha guardado
+            if original_domain is None:
+                original_domain = current_domain
+        else:
+            current_domain = f"Error al obtener el dominio: {resp.status_code} - {resp.text}"
+
+    except requests.exceptions.RequestException as e:
+        current_domain = f"Error de conexión: {str(e)}"
 
     if request.method == 'POST':
-        # Obtener datos del formulario
-        dhcp_name = request.form['dhcp_name']
-        ip_range = request.form['dhcp_ip_range']
-        subnet_mask = request.form['dhcp_subnet_mask']
-        default_router = request.form['dhcp_default_router']
-        dns = request.form['dhcp_dns']
-
-        # Construir el JSON para la configuración DHCP
-        data = {
-            "Cisco-IOS-XE-native:dhcp": {
-                "name": dhcp_name,
-                "ip": {
-                    "address": ip_range,
-                    "mask": subnet_mask,
-                    "default-router": default_router,
-                    "dns-server": dns
+        if 'update' in request.form:
+            new_domain = request.form['domain']
+            data = {
+                "Cisco-IOS-XE-native:domain": {
+                    "name": new_domain
                 }
             }
-        }
 
-        # URL del módulo de configuración DHCP en tu API
-        module = "data/Cisco-IOS-XE-native:native/ip/dhcp"
+            try:
+                resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
 
-        try:
-            # Realizar la solicitud PUT al dispositivo con los datos JSON
-            resp = requests.put(f'{api_url}/{module}', auth=basicauth, headers=headers, json=data, verify=False)
+                if resp.status_code == 200 or resp.status_code == 204:
+                    message = f"Dominio actualizado con éxito a {new_domain}"
+                    # Actualizar el nombre original solo si se realiza una modificación exitosa
+                    original_domain = new_domain
+                else:
+                    message = f"Error al actualizar el dominio: {resp.status_code} - {resp.text}"
 
-            # Verificar la respuesta del servidor
-            if resp.status_code == 200 or resp.status_code == 204:
-                message = "Configuración DHCP aplicada correctamente"
-                success = True
-            else:
-                message = f"Error al aplicar la configuración DHCP: {resp.status_code} - {resp.text}"
+            except requests.exceptions.RequestException as e:
+                message = f"Error de conexión: {str(e)}"
 
-        except Exception as e:
-            message = f"Error al conectar con la API: {str(e)}"
+        elif 'delete' in request.form:
+            try:
+                # Restaurar el último dominio configurado (new_domain)
+                data = {
+                    "Cisco-IOS-XE-native:domain": {
+                        "name": original_domain
+                    }
+                }
 
-    return render_template('dhcp.html', message=message, success=success)
+                resp = requests.delete(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+
+                if resp.status_code == 200 or resp.status_code == 204:
+                    message = f"Dominio eliminado con éxito ({original_domain})"
+                    current_domain = original_domain  # Restaurar el dominio actual al original
+                    original_domain = None  # Limpiar la variable global original_domain
+
+                else:
+                    message = f"Error al eliminar el dominio: {resp.status_code} - {resp.text}"
+
+            except requests.exceptions.RequestException as e:
+                message = f"Error de conexión: {str(e)}"
+
+    return render_template('domain.html', message=message, current_domain=current_domain)
 
 if __name__ == '__main__':
     app.run(port=5001)
-

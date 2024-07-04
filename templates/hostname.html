@@ -7,12 +7,14 @@
 </head>
 <body>
     <h1>Configurar Hostname</h1>
+
     {% if current_hostname %}
         <p>Hostname actual: {{ current_hostname }}</p>
     {% endif %}
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
+
     <form method="POST">
         <label for="hostname">Nuevo Hostname:</label>
         <input type="text" id="hostname" name="hostname" required>
