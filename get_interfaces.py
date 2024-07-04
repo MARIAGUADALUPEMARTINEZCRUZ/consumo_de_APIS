@@ -7,13 +7,13 @@ requests.packages.urllib3.disable_warnings()
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-api_url = "https://192.168.56.102/restconf/"
+api_url = "https://192.168.56.101/restconf/"
 headers = {
     "Accept": "application/yang-data+json",
     "Content-type": "application/yang-data+json"
 }
 basicauth = ("cisco", "cisco123!")
-
+original_hostname = None  # Variable global para almacenar el hostname original
 
 @app.route('/')
 def index():
@@ -41,35 +41,67 @@ def get_interfaces():
             })
     return render_template('interfaces.html', interfaces=interfaces)
 
+
 @app.route('/hostname', methods=['GET', 'POST'])
 def configure_hostname():
     message = None
-    if request.method == 'POST':
-        new_hostname = request.form['hostname']
+    current_hostname = None
+    global original_hostname
+
+    # Obtener el hostname actual
+    try:
         module = "data/Cisco-IOS-XE-native:native/hostname"
-        data = {
-            "Cisco-IOS-XE-native:hostname": new_hostname
-        }
+        resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
 
-        try:
-            resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
-            
-            # Debugging: Imprime la respuesta del servidor para entender el problema
-            print(f'Status Code: {resp.status_code}')
-            print(f'Response Text: {resp.text}')
+        if resp.status_code == 200:
+            current_hostname = resp.json().get('Cisco-IOS-XE-native:hostname', 'Hostname no disponible')
+            # Guardar el nombre actual como original si aún no se ha guardado
+            if original_hostname is None:
+                original_hostname = current_hostname
+        else:
+            current_hostname = f"Error al obtener el hostname: {resp.status_code} - {resp.text}"
 
-            if resp.status_code == 200 or resp.status_code == 204:
-                message = "Hostname actualizado con éxito"
-            else:
-                message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
-        
-        except requests.exceptions.RequestException as e:
-            message = f"Error de conexión: {str(e)}"
+    except requests.exceptions.RequestException as e:
+        current_hostname = f"Error de conexión: {str(e)}"
 
-    return render_template('hostname.html', message=message)
+    if request.method == 'POST':
+        if 'update' in request.form:
+            new_hostname = request.form['hostname']
+            data = {
+                "Cisco-IOS-XE-native:hostname": new_hostname
+            }
 
-    
-  
+            try:
+                resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+
+                if resp.status_code == 200 or resp.status_code == 204:
+                    message = f"Hostname actualizado con éxito a {new_hostname}"
+                else:
+                    message = f"Error al actualizar el hostname: {resp.status_code} - {resp.text}"
+
+            except requests.exceptions.RequestException as e:
+                message = f"Error de conexión: {str(e)}"
+
+
+        elif 'delete' in request.form:
+            try:
+                # Restaurar el hostname anterior
+                data = {
+                    "Cisco-IOS-XE-native:hostname": original_hostname
+                }
+                resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=data, verify=False)
+
+                if resp.status_code == 200 or resp.status_code == 204:
+                    message = f"Hostname eliminado con éxito ({original_hostname})"
+                    current_hostname = original_hostname  # Restaurar el nombre actual al original
+                else:
+                    message = f"Error al eliminar el hostname: {resp.status_code} - {resp.text}"
+
+            except requests.exceptions.RequestException as e:
+                message = f"Error de conexión: {str(e)}"
+
+    return render_template('hostname.html', message=message, current_hostname=current_hostname)
+
 
 @app.route('/banner')
 def get_banner():
@@ -236,6 +268,7 @@ def del_loopback():
 @app.route('/dhcp', methods=['GET'])
 def show_dhcp_form():
     return render_template('dhcp.html')
+
 @app.route('/dhcp-config', methods=['GET', 'POST'])
 def configure_dhcp():
     message = None
@@ -280,5 +313,7 @@ def configure_dhcp():
             message = f"Error al conectar con la API: {str(e)}"
 
     return render_template('dhcp.html', message=message, success=success)
+
 if __name__ == '__main__':
     app.run(port=5001)
+    #hola

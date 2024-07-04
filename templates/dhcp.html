@@ -13,12 +13,13 @@
         <div class="message {% if success %}success{% else %}error{% endif %}">
             {{ message }}
         </div>
-        {% else %}
+        {% endif %}
+
         <form action="{{ url_for('configure_dhcp') }}" method="post">
             <label for="dhcp_name">Nombre DHCP:</label>
             <input type="text" id="dhcp_name" name="dhcp_name" required>
 
-            <label for="dhcp_ip_range">Rango de IP:</label>
+            <label for="dhcp_ip_range">Rango de IP (formato: inicio fin):</label>
             <input type="text" id="dhcp_ip_range" name="dhcp_ip_range" required>
 
             <label for="dhcp_subnet_mask">Máscara de subred:</label>
@@ -32,7 +33,6 @@
 
             <button type="submit">Aplicar Configuración</button>
         </form>
-        {% endif %}
 
         <a href="{{ url_for('index') }}" class="back-to-top">Volver al inicio</a>
     </div>
