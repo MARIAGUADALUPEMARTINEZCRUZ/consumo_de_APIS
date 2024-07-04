@@ -264,7 +264,7 @@ def del_loopback():
     return render_template('eliminar.html')
 
     #return redirect(url_for('eliminar.html'))
-    
+
 @app.route('/dhcp', methods=['GET'])
 def show_dhcp_form():
     return render_template('dhcp.html')
@@ -316,4 +316,4 @@ def configure_dhcp():
 
 if __name__ == '__main__':
     app.run(port=5001)
-    #hola
+
